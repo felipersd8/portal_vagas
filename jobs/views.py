@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, Count
 from .models import Job, Profile, Plano, Assinatura, Pagamento
-from .forms import JobSearchForm, UserForm, ProfileForm
+from .forms import JobSearchForm, UserForm, ProfileForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
@@ -280,3 +280,15 @@ def toggle_auto_renewal(request):
         )
     
     return redirect('subscription_settings')
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Conta criada com sucesso! Agora você pode fazer login.')
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'jobs/register.html', {'form': form})

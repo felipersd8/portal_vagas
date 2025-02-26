@@ -1,5 +1,7 @@
 from django import forms
 from .models import Job, User, Profile
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class JobSearchForm(forms.Form):
     ORDEM_CHOICES = (
@@ -73,4 +75,19 @@ class ProfileForm(forms.ModelForm):
             'linkedin': forms.URLInput(attrs={'class': 'form-control'}),
             'github': forms.URLInput(attrs={'class': 'form-control'}),
             'portfolio': forms.URLInput(attrs={'class': 'form-control'}),
-        } 
+        }
+
+class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=30, required=True, label='Nome')
+    last_name = forms.CharField(max_length=30, required=True, label='Sobrenome')
+
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = 'Nome de usuário'
+        self.fields['password1'].label = 'Senha'
+        self.fields['password2'].label = 'Confirme a senha' 
