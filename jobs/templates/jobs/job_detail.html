@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ job.titulo }} - {{ job.empresa }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Botão Voltar -->
+    <div class="col-12 mb-4">
+        <a href="{% url 'job_list' %}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Voltar para lista
+        </a>
+    </div>
+
+    <!-- Detalhes da Vaga -->
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="card-title text-primary mb-3">{{ job.titulo }}</h1>
+                
+                <div class="mb-4">
+                    <h5 class="text-muted">
+                        <i class="fas fa-building"></i> {{ job.empresa }}
+                    </h5>
+                    <p class="text-muted">
+                        <i class="fas fa-clock"></i> Publicado em: {{ job.data_publicacao|date:"d/m/Y" }}
+                    </p>
+                </div>
+
+                <div class="mb-4">
+                    <h4>Descrição da Vaga</h4>
+                    <p>{{ job.descricao|linebreaks }}</p>
+                </div>
+
+                {% if job.requisitos %}
+                <div class="mb-4">
+                    <h4>Requisitos</h4>
+                    <p>{{ job.requisitos|linebreaks }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4 mt-4 mt-lg-0">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">Informações da Vaga</h4>
+                
+                <p class="mb-2">
+                    <i class="fas fa-building-user"></i> <strong>Modalidade:</strong>
+                    <br>
+                    {% if job.modalidade == 'remoto' %}
+                        <span class="badge bg-success">Remoto</span>
+                    {% elif job.modalidade == 'hibrido' %}
+                        <span class="badge bg-info">Híbrido</span>
+                    {% else %}
+                        <span class="badge bg-primary">Presencial</span>
+                    {% endif %}
+                </p>
+
+                {% if job.salario %}
+                <p class="mb-2">
+                    <i class="fas fa-money-bill-wave"></i> <strong>Salário:</strong>
+                    <br>R$ {{ job.salario }}
+                </p>
+                {% endif %}
+
+                {% if job.tipo_contrato %}
+                <p class="mb-2">
+                    <i class="fas fa-file-contract"></i> <strong>Tipo de Contrato:</strong>
+                    <br>{{ job.tipo_contrato }}
+                </p>
+                {% endif %}
+
+                {% if job.local %}
+                <p class="mb-2">
+                    <i class="fas fa-map-marker-alt"></i> <strong>Local:</strong>
+                    <br>{{ job.local }}
+                </p>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-white">
+                <a href="#" class="btn btn-primary w-100">
+                    <i class="fas fa-paper-plane"></i> Candidatar-se
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Estatísticas -->
+<div class="container mb-4">
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <h3 class="mb-0">{{ total_vagas }}</h3>
+                    <small class="text-muted">Total de Vagas</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <h3 class="mb-0">{{ modalidades_count.remoto }}</h3>
+                    <small class="text-muted">Vagas Remotas</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <h3 class="mb-0">{{ modalidades_count.hibrido }}</h3>
+                    <small class="text-muted">Vagas Híbridas</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <h3 class="mb-0">{{ modalidades_count.presencial }}</h3>
+                    <small class="text-muted">Vagas Presenciais</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filtros -->
+<div class="container mb-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <!-- Busca e Ordenação -->
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        {{ form.busca }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Ordenar por</label>
+                    {{ form.ordenacao }}
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Faixa Salarial</label>
+                    {{ form.faixa_salarial }}
+                </div>
+
+                <!-- Modalidade -->
+                <div class="col-12">
+                    <label class="form-label">Modalidade de Trabalho</label>
+                    <div class="d-flex gap-4">
+                        {% for value, text in form.modalidade.field.choices %}
+                            <div class="form-check">
+                                <input type="checkbox" 
+                                       name="modalidade" 
+                                       value="{{ value }}" 
+                                       class="form-check-input"
+                                       id="modalidade_{{ value }}"
+                                       {% if value in form.modalidade.value %}checked{% endif %}>
+                                <label class="form-check-label" for="modalidade_{{ value }}">
+                                    {% if value == 'remoto' %}
+                                        <i class="fas fa-laptop-house text-success"></i>
+                                    {% elif value == 'hibrido' %}
+                                        <i class="fas fa-building-user text-info"></i>
+                                    {% else %}
+                                        <i class="fas fa-building text-primary"></i>
+                                    {% endif %}
+                                    {{ text }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Tipo de Contrato -->
+                <div class="col-12">
+                    <label class="form-label">Tipo de Contrato</label>
+                    <div class="row">
+                        {% for value, text in form.tipo_contrato.field.choices %}
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input type="checkbox" 
+                                           name="tipo_contrato" 
+                                           value="{{ value }}" 
+                                           class="form-check-input"
+                                           id="tipo_{{ value }}"
+                                           {% if value in form.tipo_contrato.value %}checked{% endif %}>
+                                    <label class="form-check-label" for="tipo_{{ value }}">
+                                        <i class="fas fa-file-contract"></i> {{ text }}
+                                    </label>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Botões -->
+                <div class="col-12">
+                    <hr>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter"></i> Filtrar
+                    </button>
+                    <a href="{% url 'job_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-undo"></i> Limpar Filtros
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Lista de Vagas -->
+<div class="container">
+    <div class="row g-4">
+        {% if jobs %}
+            {% for job in jobs %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary mb-1">{{ job.titulo }}</h5>
+                            <h6 class="card-subtitle mb-3 text-muted">
+                                <i class="fas fa-building"></i> {{ job.empresa }}
+                            </h6>
+                            
+                            <div class="mb-3">
+                                {% if job.modalidade == 'remoto' %}
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-laptop-house"></i> Remoto
+                                    </span>
+                                {% elif job.modalidade == 'hibrido' %}
+                                    <span class="badge bg-info">
+                                        <i class="fas fa-building-user"></i> Híbrido
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-primary">
+                                        <i class="fas fa-building"></i> Presencial
+                                    </span>
+                                {% endif %}
+                                
+                                {% if job.tipo_contrato %}
+                                    <span class="badge bg-secondary">
+                                        <i class="fas fa-file-contract"></i> {{ job.get_tipo_contrato_display }}
+                                    </span>
+                                {% endif %}
+                                
+                                {% if job.salario %}
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="fas fa-money-bill-wave"></i> R$ {{ job.salario|floatformat:2 }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                            
+                            <p class="card-text text-muted">{{ job.descricao|truncatewords:30 }}</p>
+                        </div>
+                        <div class="card-footer bg-white border-top-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-clock"></i> 
+                                    {{ job.data_publicacao|timesince }}
+                                </small>
+                                <a href="{% url 'job_detail' job.pk %}" class="btn btn-primary btn-sm">
+                                    Ver Detalhes
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Nenhuma vaga encontrada com os filtros selecionados.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

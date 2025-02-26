@@ -1,0 +1,66 @@
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+}
+
+/* Cards */
+.card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.8em;
+}
+
+/* Custom Shadows */
+.shadow-hover:hover {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/* Custom Colors */
+.text-primary {
+    color: #0d6efd !important;
+}
+
+.bg-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%) !important;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.btn-lg {
+    padding: 0.8rem 2rem;
+}
+
+/* Stats Cards */
+.stats-card {
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.stats-card .card-body {
+    padding: 2rem;
+}
+
+/* Job Cards */
+.job-card {
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.job-card .card-footer {
+    background-color: transparent;
+    border-top: 1px solid rgba(0,0,0,.125);
+} 

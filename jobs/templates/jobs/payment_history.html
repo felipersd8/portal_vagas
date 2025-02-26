@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-header bg-white py-4">
+                    <h2 class="card-title mb-0">
+                        <i class="fas fa-history text-primary me-2"></i>
+                        Histórico de Pagamentos
+                    </h2>
+                </div>
+                
+                <div class="card-body p-4">
+                    {% if pagamentos %}
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Plano</th>
+                                        <th>Valor</th>
+                                        <th>Status</th>
+                                        <th>Detalhes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pagamento in pagamentos %}
+                                    <tr>
+                                        <td>{{ pagamento.data_pagamento|date:"d/m/Y H:i" }}</td>
+                                        <td>
+                                            <span class="fw-bold">{{ pagamento.plano.nome }}</span>
+                                        </td>
+                                        <td>R$ {{ pagamento.valor|floatformat:2 }}</td>
+                                        <td>
+                                            {% if pagamento.status == 'approved' %}
+                                                <span class="badge bg-success">Aprovado</span>
+                                            {% elif pagamento.status == 'pending' %}
+                                                <span class="badge bg-warning text-dark">Pendente</span>
+                                            {% elif pagamento.status == 'rejected' %}
+                                                <span class="badge bg-danger">Rejeitado</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Reembolsado</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#paymentModal{{ pagamento.id }}">
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                Ver detalhes
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {% for pagamento in pagamentos %}
+                        <!-- Modal de Detalhes -->
+                        <div class="modal fade" id="paymentModal{{ pagamento.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Detalhes do Pagamento</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <small class="text-muted">ID do Pagamento</small>
+                                            <p class="mb-0">{{ pagamento.payment_id }}</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <small class="text-muted">Data do Pagamento</small>
+                                            <p class="mb-0">{{ pagamento.data_pagamento|date:"d/m/Y H:i" }}</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <small class="text-muted">Plano</small>
+                                            <p class="mb-0">{{ pagamento.plano.nome }}</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <small class="text-muted">Valor</small>
+                                            <p class="mb-0">R$ {{ pagamento.valor|floatformat:2 }}</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <small class="text-muted">Status</small>
+                                            <p class="mb-0">{{ pagamento.get_status_display }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-receipt text-muted mb-3" style="font-size: 3rem;"></i>
+                            <h4 class="text-muted">Nenhum pagamento encontrado</h4>
+                            <p class="text-muted mb-4">Você ainda não realizou nenhum pagamento.</p>
+                            <a href="{% url 'planos' %}" class="btn btn-primary">
+                                <i class="fas fa-tag me-2"></i>
+                                Ver Planos Disponíveis
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

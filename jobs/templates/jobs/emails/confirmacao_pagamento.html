@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 0 0 5px 5px;
+        }
+        .button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Pagamento Confirmado!</h1>
+        </div>
+        <div class="content">
+            <h2>Olá {{ user.first_name|default:user.username }},</h2>
+            <p>Seu pagamento para o plano <strong>{{ plano.nome }}</strong> foi confirmado com sucesso!</p>
+            
+            <h3>Detalhes da sua assinatura:</h3>
+            <ul>
+                <li>Plano: {{ plano.nome }}</li>
+                <li>Valor: R$ {{ plano.preco|floatformat:2 }}</li>
+                <li>Data de início: {{ assinatura.data_inicio|date:"d/m/Y" }}</li>
+                <li>Data de término: {{ assinatura.data_fim|date:"d/m/Y" }}</li>
+            </ul>
+
+            <h3>Benefícios do seu plano:</h3>
+            <ul>
+                <li>{{ plano.vagas_por_dia }} candidaturas por dia</li>
+                {% if plano.notificacoes %}
+                <li>Notificações personalizadas</li>
+                {% endif %}
+                {% if plano.destaque_cv %}
+                <li>CV em destaque</li>
+                {% endif %}
+                {% if plano.acesso_antecipado %}
+                <li>Acesso antecipado a vagas</li>
+                {% endif %}
+            </ul>
+
+            <a href="{{ site_url }}{% url 'profile' %}" class="button">Ver Minha Assinatura</a>
+            
+            <p>Se tiver alguma dúvida, não hesite em nos contatar.</p>
+        </div>
+        <div class="footer">
+            <p>© {% now "Y" %} Portal de Vagas. Todos os direitos reservados.</p>
+        </div>
+    </div>
+</body>
+</html> 

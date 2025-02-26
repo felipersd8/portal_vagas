@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="bg-primary text-white py-5 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-3">Encontre seu próximo desafio profissional</h1>
+                <p class="lead mb-4">As melhores oportunidades para desenvolvedores, designers e profissionais de tecnologia.</p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'job_list' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-search"></i> Buscar Vagas
+                    </a>
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-user"></i> Área do Candidato
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <img src="https://via.placeholder.com/600x400" alt="Hero Image" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="container mb-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center h-100">
+                <div class="card-body">
+                    <div class="display-4 text-primary mb-3">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3 class="card-title">{{ total_vagas }}</h3>
+                    <p class="card-text text-muted">Vagas Disponíveis</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center h-100">
+                <div class="card-body">
+                    <div class="display-4 text-success mb-3">
+                        <i class="fas fa-laptop-house"></i>
+                    </div>
+                    <h3 class="card-title">{{ vagas_remotas }}</h3>
+                    <p class="card-text text-muted">Vagas Remotas</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center h-100">
+                <div class="card-body">
+                    <div class="display-4 text-info mb-3">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 class="card-title">{{ total_empresas }}</h3>
+                    <p class="card-text text-muted">Empresas Cadastradas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Latest Jobs Section -->
+<div class="container mb-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="border-bottom pb-2">Últimas Vagas</h2>
+        </div>
+    </div>
+    <div class="row g-4">
+        {% for job in latest_jobs %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ job.titulo }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            <i class="fas fa-building"></i> {{ job.empresa }}
+                        </h6>
+                        
+                        <div class="mb-2">
+                            {% if job.modalidade == 'remoto' %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-laptop-house"></i> Remoto
+                                </span>
+                            {% elif job.modalidade == 'hibrido' %}
+                                <span class="badge bg-info">
+                                    <i class="fas fa-building-user"></i> Híbrido
+                                </span>
+                            {% else %}
+                                <span class="badge bg-primary">
+                                    <i class="fas fa-building"></i> Presencial
+                                </span>
+                            {% endif %}
+                            
+                            {% if job.tipo_contrato %}
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-file-contract"></i> {{ job.get_tipo_contrato_display }}
+                                </span>
+                            {% endif %}
+                        </div>
+                        
+                        <p class="card-text">{{ job.descricao|truncatewords:20 }}</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-clock"></i> 
+                                {{ job.data_publicacao|timesince }}
+                            </small>
+                            <a href="{% url 'job_detail' job.pk %}" class="btn btn-outline-primary btn-sm">
+                                Ver Detalhes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <a href="{% url 'job_list' %}" class="btn btn-primary btn-lg">
+                Ver Todas as Vagas
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Categories Section -->
+<div class="container mb-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="border-bottom pb-2">Tipos de Contratação</h2>
+        </div>
+    </div>
+    <div class="row g-4">
+        {% for tipo in tipos_contrato %}
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="display-4 text-primary mb-3">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h5 class="card-title">{{ tipo.1 }}</h5>
+                    <p class="card-text text-muted">
+                        {{ tipo.count }} vagas disponíveis
+                    </p>
+                    <a href="{% url 'job_list' %}?tipo_contrato={{ tipo.0 }}" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-header bg-primary text-white py-4">
+                    <h2 class="card-title mb-0">
+                        <i class="fas fa-cog me-2"></i>
+                        Configurações da Assinatura
+                    </h2>
+                </div>
+                
+                <div class="card-body p-4">
+                    {% if assinatura %}
+                        <div class="row">
+                            <!-- Status da Assinatura -->
+                            <div class="col-md-6 mb-4">
+                                <div class="bg-light p-4 rounded-3 h-100">
+                                    <h4 class="fw-bold mb-3">Status da Assinatura</h4>
+                                    <p class="mb-2">
+                                        <strong>Plano Atual:</strong> {{ assinatura.plano.nome }}
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Valor:</strong> 
+                                        {% if assinatura.plano.preco == 0 %}
+                                            <span class="text-success">Gratuito</span>
+                                        {% else %}
+                                            R$ {{ assinatura.plano.preco|floatformat:2 }}/mês
+                                        {% endif %}
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Status:</strong>
+                                        {% if assinatura.ativa %}
+                                            <span class="badge bg-success">Ativa</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Inativa</span>
+                                        {% endif %}
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Dias Restantes:</strong> {{ assinatura.dias_restantes }} dias
+                                    </p>
+                                    {% if assinatura.proxima_cobranca %}
+                                    <p class="mb-0">
+                                        <strong>Próxima Cobrança:</strong> {{ assinatura.proxima_cobranca|date:"d/m/Y" }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Configurações de Renovação -->
+                            <div class="col-md-6 mb-4">
+                                <div class="bg-light p-4 rounded-3 h-100">
+                                    <h4 class="fw-bold mb-3">Renovação Automática</h4>
+                                    {% if assinatura.plano.preco > 0 %}
+                                        <form method="post" action="{% url 'toggle_auto_renewal' %}">
+                                            {% csrf_token %}
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input" type="checkbox" 
+                                                       id="autoRenewal" name="auto_renewal" 
+                                                       {% if assinatura.renovacao_automatica %}checked{% endif %}
+                                                       onchange="this.form.submit()">
+                                                <label class="form-check-label" for="autoRenewal">
+                                                    Renovar automaticamente minha assinatura
+                                                </label>
+                                            </div>
+                                        </form>
+                                        <p class="text-muted small">
+                                            {% if assinatura.renovacao_automatica %}
+                                                Sua assinatura será renovada automaticamente a cada mês.
+                                                O valor será cobrado através do mesmo método de pagamento.
+                                            {% else %}
+                                                Sua assinatura não será renovada automaticamente.
+                                                Você precisará fazer um novo pagamento para continuar usando o serviço.
+                                            {% endif %}
+                                        </p>
+                                    {% else %}
+                                        <p class="text-muted">
+                                            A renovação automática não está disponível para planos gratuitos.
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Histórico de Renovações -->
+                            <div class="col-12">
+                                <div class="bg-light p-4 rounded-3">
+                                    <h4 class="fw-bold mb-3">Histórico de Renovações</h4>
+                                    {% if renovacoes %}
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Data</th>
+                                                        <th>Tipo</th>
+                                                        <th>Valor</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for renovacao in renovacoes %}
+                                                    <tr>
+                                                        <td>{{ renovacao.data_pagamento|date:"d/m/Y" }}</td>
+                                                        <td>{{ renovacao.get_tipo_display }}</td>
+                                                        <td>R$ {{ renovacao.valor|floatformat:2 }}</td>
+                                                        <td>
+                                                            <span class="badge bg-{{ renovacao.get_status_color }}">
+                                                                {{ renovacao.get_status_display }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted text-center py-3">
+                                            Nenhuma renovação encontrada.
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-exclamation-circle text-muted mb-3" style="font-size: 3rem;"></i>
+                            <h4 class="text-muted">Nenhuma Assinatura Ativa</h4>
+                            <p class="text-muted mb-4">Você não possui uma assinatura ativa no momento.</p>
+                            <a href="{% url 'planos' %}" class="btn btn-primary">
+                                <i class="fas fa-tag me-2"></i>
+                                Ver Planos Disponíveis
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

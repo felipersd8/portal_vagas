@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">Escolha seu Plano</h1>
+        <p class="lead text-muted">Encontre a melhor opção para impulsionar sua carreira</p>
+    </div>
+
+    <div class="row justify-content-center g-4">
+        <!-- Plano Gratuito -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow-sm hover-shadow border-0 rounded-3">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="icon-circle bg-light mb-3">
+                            <i class="fas fa-paper-plane text-primary"></i>
+                        </div>
+                        <h3 class="fw-bold">Gratuito</h3>
+                        <div class="pricing-value">
+                            <h2 class="display-6 fw-bold mb-0">R$ 0</h2>
+                            <span class="text-muted">/mês</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <ul class="list-unstyled mt-4 mb-5">
+                        <li class="mb-3 d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>3 candidaturas por dia</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center text-muted">
+                            <i class="fas fa-times-circle me-2"></i>
+                            <span>Destaque no CV</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center text-muted">
+                            <i class="fas fa-times-circle me-2"></i>
+                            <span>Acesso antecipado</span>
+                        </li>
+                    </ul>
+                    <div class="d-grid">
+                        <a href="{% url 'checkout' plano_gratuito.id %}" 
+                           class="btn btn-outline-primary btn-lg rounded-pill">
+                            <i class="fas fa-rocket me-2"></i>
+                            Começar Grátis
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plano Básico -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow-sm hover-shadow border-0 rounded-3">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="icon-circle bg-light mb-3">
+                            <i class="fas fa-star text-primary"></i>
+                        </div>
+                        <h3 class="fw-bold">Básico</h3>
+                        <div class="pricing-value">
+                            <h2 class="display-6 fw-bold mb-0">R$ 19,90</h2>
+                            <span class="text-muted">/mês</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <ul class="list-unstyled mt-4 mb-5">
+                        <li class="mb-3 d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>10 candidaturas por dia</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Notificações personalizadas</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center text-muted">
+                            <i class="fas fa-times-circle me-2"></i>
+                            <span>Destaque no CV</span>
+                        </li>
+                    </ul>
+                    <div class="d-grid">
+                        <a href="{% url 'checkout' plano_basico.id %}" 
+                           class="btn btn-primary btn-lg rounded-pill">
+                            <i class="fas fa-arrow-right me-2"></i>
+                            Assinar Plano
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plano Premium -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow border-0 rounded-3 border-primary">
+                <div class="card-header text-center bg-primary text-white py-3 rounded-top">
+                    <span class="badge bg-warning px-3 py-2 rounded-pill">MAIS POPULAR</span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="icon-circle bg-primary bg-opacity-10 mb-3">
+                            <i class="fas fa-crown text-primary"></i>
+                        </div>
+                        <h3 class="fw-bold">Premium</h3>
+                        <div class="pricing-value">
+                            <h2 class="display-6 fw-bold mb-0">R$ 49,90</h2>
+                            <span class="text-muted">/mês</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <ul class="list-unstyled mt-4 mb-5">
+                        <li class="mb-3 d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>30 candidaturas por dia</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Destaque no CV</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Acesso antecipado</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Contato direto</span>
+                        </li>
+                    </ul>
+                    <div class="d-grid">
+                        <a href="{% url 'checkout' plano_premium.id %}" 
+                           class="btn btn-primary btn-lg rounded-pill">
+                            <i class="fas fa-crown me-2"></i>
+                            Assinar Premium
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plano Empresarial -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow-sm hover-shadow border-0 rounded-3">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="icon-circle bg-light mb-3">
+                            <i class="fas fa-building text-primary"></i>
+                        </div>
+                        <h3 class="fw-bold">Empresarial</h3>
+                        <div class="pricing-value">
+                            <h2 class="display-6 fw-bold mb-0">R$ 99,90</h2>
+                            <span class="text-muted">/mês</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <ul class="list-unstyled mt-4 mb-5">
+                        <li class="mb-3 d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Candidaturas ilimitadas</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Todos os benefícios Premium</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>Mentoria personalizada</span>
+                        </li>
+                    </ul>
+                    <div class="d-grid">
+                        <a href="{% url 'checkout' plano_empresarial.id %}" 
+                           class="btn btn-primary btn-lg rounded-pill">
+                            <i class="fas fa-building me-2"></i>
+                            Assinar Empresarial
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção de FAQ -->
+    <div class="mt-5 pt-5">
+        <h2 class="text-center mb-4">Perguntas Frequentes</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item border-0 mb-3 shadow-sm rounded">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed rounded" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Como funciona o período de teste?
+                            </button>
+                        </h3>
+                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Você pode começar gratuitamente e testar nossa plataforma sem compromisso.
+                                O plano gratuito oferece 3 candidaturas por dia e acesso às funcionalidades básicas.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-0 mb-3 shadow-sm rounded">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed rounded" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Posso cancelar a qualquer momento?
+                            </button>
+                        </h3>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Sim! Você pode cancelar sua assinatura a qualquer momento.
+                                Não há contratos de fidelidade ou taxas de cancelamento.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-0 mb-3 shadow-sm rounded">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed rounded" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Como funciona o pagamento?
+                            </button>
+                        </h3>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Os pagamentos são processados de forma segura através do Mercado Pago.
+                                Aceitamos cartões de crédito e outras formas de pagamento.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.icon-circle i {
+    font-size: 24px;
+}
+
+.hover-shadow {
+    transition: all 0.3s ease;
+}
+
+.hover-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(13, 110, 253, 0.1);
+}
+
+.pricing-value {
+    margin: 1.5rem 0;
+}
+
+.card {
+    overflow: hidden;
+}
+
+.badge {
+    font-weight: 500;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+}
+
+.rounded-pill {
+    border-radius: 50rem!important;
+}
+</style>
+{% endblock %} 

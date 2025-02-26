@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 0 0 5px 5px;
+        }
+        .button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Aviso de Renovação</h1>
+        </div>
+        <div class="content">
+            <h2>Olá {{ user.first_name|default:user.username }},</h2>
+            
+            <p>Sua assinatura do plano <strong>{{ assinatura.plano.nome }}</strong> será renovada automaticamente em {{ data_renovacao }}.</p>
+            
+            <p>Detalhes da renovação:</p>
+            <ul>
+                <li>Plano: {{ assinatura.plano.nome }}</li>
+                <li>Valor: R$ {{ assinatura.plano.preco|floatformat:2 }}</li>
+                <li>Data da renovação: {{ data_renovacao }}</li>
+            </ul>
+
+            <p>
+                Se você deseja cancelar a renovação automática, acesse suas 
+                <a href="{{ site_url }}{% url 'subscription_settings' %}">configurações de assinatura</a>.
+            </p>
+
+            <p>Caso tenha alguma dúvida, entre em contato conosco.</p>
+        </div>
+    </div>
+</body>
+</html> 
