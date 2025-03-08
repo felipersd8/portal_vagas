@@ -10,7 +10,7 @@ SECRET_KEY = 's7gx91h8=6#&s0jfi8m!r$t2b-_54+m_-2#6ez$-pj@+nr9c*='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['felipefln.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
